@@ -80,8 +80,6 @@ A continuación se muestra el listado de pruebas incluidas en el archivo `src/te
 ```markdown
 ## Pruebas
 
-El repositorio incluye pruebas automatizadas para el servidor. Estas pruebas se encuentran en el archivo `src/test/server.spec.js`. A continuación se muestra el listado de pruebas:
-
 - **Prueba de conexión a la raíz**
   - Verifica que se pueda acceder correctamente a la raíz del servidor.
   - Método: GET
