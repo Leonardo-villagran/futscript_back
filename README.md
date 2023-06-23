@@ -19,6 +19,10 @@ Antes de ejecutar el servidor, asegúrate de tener instalado lo siguiente:
 npm install
 ```
 
+## Base de datos
+
+1. Se agrega a la raíz del proyecto un archivo llamado `equipos.sql` el cual posee el código para generar las tablas con datos en formato postgres, para una base de datos. 
+
 ## Configuración
 
 1. Crea un archivo `.env` en el directorio raíz del proyecto y establecer los valores de las variables de entorno según tu configuración local. Esto es solo un ejemplo:
