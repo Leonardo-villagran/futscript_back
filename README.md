@@ -21,7 +21,7 @@ npm install
 
 ## Base de datos
 
-1. Se agrega a la raíz del proyecto un archivo llamado `equipos.sql` el cual posee el código para generar las tablas con datos en formato postgres, para una base de datos. 
+1. Se agrega a la raíz del proyecto un archivo llamado `script.sql` el cual posee el código para generar las tablas con datos en formato postgres, para una base de datos. 
 
 ## Configuración
 
@@ -59,8 +59,11 @@ El servidor utiliza los siguientes middlewares:
 
 - `cors`: Permite el intercambio de recursos de origen cruzado (CORS) para permitir solicitudes desde diferentes orígenes.
 - `express.json()`: Analiza las solicitudes entrantes con cargas útiles en formato JSON.
-- `reportMiddleware`: Middleware que genera un informe de solicitudes.
+- `reportMiddleware`: Middleware que genera un informe de cada solicitud.
 - `databaseMiddleware`: Middleware que verifica la conectividad con la base de datos.
+- El archivo `src/middlewares/middlewares.js` posee dos Middleware que son llamados dentro de cada solicitud:
+  - `verificarCredencialesM`:  Middleware que verifica la existencia de credenciales. 
+  - `validarTokenM`: Middleware que valida el token enviado para cada solicitud que lo requiera.  
 
 
 ## Pruebas
@@ -97,15 +100,27 @@ A continuación se muestra el listado de pruebas incluidas en el archivo `src/te
     - Código de estado: 200
     - Respuesta: Objeto JSON que contiene la propiedad "token" (cadena de texto)
 
-- **Prueba de obtención de un objeto de jugadores por ID de equipo**
-  - Verifica la obtención de un objeto de jugadores por el ID del equipo.
-  - Método: GET
-  - Ruta: `/equipos/:id/jugadores`
-  - Parámetros de la ruta: `id` (ID del equipo)
+- **Prueba de registro de nuevo usuario y revisión de mensaje de usuario creado con éxito**
+  - Verifica el registro de un nuevo usuario y la recepción de un mensaje de éxito.
+  - Solo un administrador puede crear un nuevo usuario, por eso se deben enviar el token del administrador
+  - Método: POST
+  - Ruta: `/registro`
+  - Cuerpo de la solicitud: `{ email: 'ejemplo@example.com', password: 'contraseña123' }`
+  - Cuerpo de la solicitud: Objeto JSON con datos de usuario
   - Cabecera de autorización: Token de acceso válido
   - Resultados esperados:
-    - Código de estado: 200
-    - Respuesta: Objeto JSON que representa los jugadores del equipo
+    - Código de estado: 201
+    - Respuesta: Objeto JSON que contiene el mensaje "Usuario creado con éxito"
+
+- **Prueba de registro de nuevo equipo y revisión de mensaje de equipo ingresado con éxito**
+  - Verifica el registro de un nuevo equipo y la recepción de un mensaje de éxito.
+  - Método: POST
+  - Ruta: `/equipos`
+  - Cuerpo de la solicitud: `{"name": "Equipo nuevo" }`
+  - Cabecera de autorización: Token de acceso válido
+  - Resultados esperados:
+    - Código de estado: 201
+    - Respuesta: Objeto JSON que contiene el mensaje "Equipo ingresado con éxito"
 
 - **Prueba de obtención de un objeto de equipos**
   - Verifica la obtención de un objeto de equipos.
@@ -116,36 +131,26 @@ A continuación se muestra el listado de pruebas incluidas en el archivo `src/te
     - Código de estado: 200
     - Respuesta: Objeto JSON que representa los equipos
 
-- **Prueba de registro de nuevo usuario y revisión de mensaje de usuario creado con éxito**
-  - Verifica el registro de un nuevo usuario y la recepción de un mensaje de éxito.
-  - Método: POST
-  - Ruta: `/registro`
-  - Cuerpo de la solicitud: Objeto JSON con datos de usuario
-  - Cabecera de autorización: Token de acceso válido
-  - Resultados esperados:
-    - Código de estado: 201
-    - Respuesta: Objeto JSON que contiene el mensaje "Usuario creado con éxito"
-
-- **Prueba de registro de nuevo equipo y revisión de mensaje de equipo ingresado con éxito**
-  - Verifica el registro de un nuevo equipo y la recepción de un mensaje de éxito.
-  - Método: POST
-  - Ruta: `/equipo`
-  - Cuerpo de la solicitud: Objeto JSON con datos de equipo
-  - Cabecera de autorización: Token de acceso válido
-  - Resultados esperados:
-    - Código de estado: 201
-    - Respuesta: Objeto JSON que contiene el mensaje "Equipo ingresado con éxito"
-
 - **Prueba de registro de nuevo jugador a equipo y revisión de mensaje de jugador ingresado con éxito**
   - Verifica el registro de un nuevo jugador a un equipo y la recepción de un mensaje de éxito.
   - Método: POST
-  - Ruta: `/equipos/:id/jugadores
-  - Parámetros de la ruta: `id` (ID del equipo)
-  - Cuerpo de la solicitud: Objeto JSON con datos de jugador
+  - Ruta: `/equipos/2/jugadores`
+  - Parámetros de la ruta: `:teamID` (ID del equipo)
+  - Cuerpo de la solicitud: `{ "name":"Jugador nuevo", "position":2}`
   - Cabecera de autorización: Token de acceso válido
   - Resultados esperados:
     - Código de estado: 201
     - Respuesta: Objeto JSON que contiene el mensaje "Jugador ingresado con éxito"
+
+- **Prueba de obtención de un objeto de jugadores por ID de equipo**
+  - Verifica la obtención de un objeto de jugadores por el ID del equipo.
+  - Método: GET
+  - Ruta: `/equipos/2/jugadores`
+  - Parámetros de la ruta: `:teamID` (ID del equipo)
+  - Cabecera de autorización: Token de acceso válido
+  - Resultados esperados:
+    - Código de estado: 200
+    - Respuesta: Objeto JSON que representa los jugadores del equipo
 
 - **Prueba de ruta no definida**
   - Verifica el manejo de una solicitud a una ruta no definida.

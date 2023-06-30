@@ -1,18 +1,20 @@
 const router = require('express').Router();
-const controllers = require('../controllers/controllers');
+const usuarios = require('../controllers/usuariosController');
+const jugadores = require('../controllers/jugadoresController');
+const equipos = require('../controllers/equiposController');
 const middlewares = require('../middlewares/middlewares');
 
 // Endpoint para el inicio de sesión
-router.post('/login', middlewares.verificarCredencialesM, controllers.obtenerLogin);
+router.post('/login', middlewares.verificarCredencialesM, usuarios.realizarLogin);
 
-router.get('/equipos/:teamID/jugadores', middlewares.validarTokenM, controllers.obtenerJugadoresPorEquipo);
+router.post('/registro', middlewares.validarTokenM, usuarios.registrarUsuario);
 
-router.get('/equipos', middlewares.validarTokenM, controllers.obtenerEquipos);
+router.get('/equipos', middlewares.validarTokenM, equipos.obtenerEquipos);
 
-router.post('/registro', middlewares.validarTokenM, controllers.registrarUsuario);
+router.post('/equipos', middlewares.validarTokenM, equipos.agregarEquipo);
 
-router.post('/equipo', middlewares.validarTokenM, controllers.registrarEquipo);
+router.get('/equipos/:teamID/jugadores', middlewares.validarTokenM, jugadores.obtenerJugadores);
 
-router.post('/equipos/:teamID/jugadores', middlewares.validarTokenM, controllers.registrarJugador);
+router.post('/equipos/:teamID/jugadores', middlewares.validarTokenM, jugadores.registrarJugador);
 
 module.exports = router;

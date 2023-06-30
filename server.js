@@ -12,6 +12,7 @@ app.use(express.json());
 //Middleware que determina determina si hay conexión a la base de datos y entrega un reporte de solicitudes.
 app.use(reportMiddleware);
 app.use(databaseMiddleware);
+
 // Inicia el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

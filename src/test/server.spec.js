@@ -21,26 +21,7 @@ describe('Pruebas del servidor Express', () => {
         expect(typeof response.body.token).toBe('string');
     });
 
-    it('GET /equipos/:id/jugadores Prueba de obtención de un objeto de jugadores por id de equipo', async () => {
-        // Simula una solicitud GET a /equipos/:teamID/jugadores con un token válido
-        const response = await request(app)
-            .get('/equipos/2/jugadores')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg3NDcwMzc0fQ.L0sD8BRnSmoO9q4MCJ-rMmyqvmC6YEGB2Go0lnPCgFo');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual(expect.any(Object));
-    });
-    it('GET /equipos Prueba de obtención de un objeto de equipos', async () => {
-        // Simula una solicitud GET a /equipos/:teamID/jugadores con un token válido
-        const response = await request(app)
-            .get('/equipos')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg3NDcwMzc0fQ.L0sD8BRnSmoO9q4MCJ-rMmyqvmC6YEGB2Go0lnPCgFo');
-
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual(expect.any(Object));
-    });
-
-    it('POST /registro Prueba de registro de nuevo usuario y revisión de mensaje de usuario creado con éxito ', async () => {
+    it('POST /registro Prueba de registro de nuevo usuario y revisión de mensaje de usuario creado con éxito con Token válido', async () => {
         const usuario = {
             email: 'ejemplo@example.com',
             password: 'contraseña123',
@@ -50,7 +31,7 @@ describe('Pruebas del servidor Express', () => {
         const response = await request(app)
             .post('/registro')
             .send(usuario)
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg3NDcwMzc0fQ.L0sD8BRnSmoO9q4MCJ-rMmyqvmC6YEGB2Go0lnPCgFo');
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg2Njg2NTcyfQ.dV8oZhGpS-p9QoDelWCQqA5JUt9iHK2KI-TkdABM7wA');
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({ mensaje: 'Usuario creado con éxito' });
@@ -63,29 +44,54 @@ describe('Pruebas del servidor Express', () => {
 
         // Simula una solicitud POST a /registro con un email y un password válidos
         const response = await request(app)
-            .post('/equipo')
+            .post('/equipos')
             .send(equipo)
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg3NDcwMzc0fQ.L0sD8BRnSmoO9q4MCJ-rMmyqvmC6YEGB2Go0lnPCgFo');
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg2Njg2NTcyfQ.dV8oZhGpS-p9QoDelWCQqA5JUt9iHK2KI-TkdABM7wA');
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({ mensaje: 'Equipo ingresado con éxito.' });
     });
 
+
+    it('GET /equipos Prueba de obtención de un objeto de equipos', async () => {
+        // Simula una solicitud GET a /equipos/:teamID/jugadores con un token válido
+        const response = await request(app)
+            .get('/equipos')
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg2Njg2NTcyfQ.dV8oZhGpS-p9QoDelWCQqA5JUt9iHK2KI-TkdABM7wA');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(expect.any(Object));
+    });
+
+    
     it('POST /equipos/:id/jugadores Prueba de registro de nuevo jugador a equipo y revisión de mensaje de jugador ingresado con éxito ', async () => {
         const equipo = {
             name: "Jugador nuevo",
-            "id_posicion": 2
+            "position": 2
         };
 
         // Simula una solicitud POST a /registro con un email y un password válidos
         const response = await request(app)
             .post('/equipos/2/jugadores')
             .send(equipo)
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg3NDcwMzc0fQ.L0sD8BRnSmoO9q4MCJ-rMmyqvmC6YEGB2Go0lnPCgFo');
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg2Njg2NTcyfQ.dV8oZhGpS-p9QoDelWCQqA5JUt9iHK2KI-TkdABM7wA');
 
         expect(response.status).toBe(201);
         expect(response.body).toEqual({ mensaje: 'Jugador ingresado con éxito.' });
     });
+
+    it('GET /equipos/:id/jugadores Prueba de obtención de un objeto de jugadores por id de equipo', async () => {
+        // Simula una solicitud GET a /equipos/:teamID/jugadores con un token válido
+        const response = await request(app)
+            .get('/equipos/2/jugadores')
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluIiwiaWF0IjoxNjg2Njg2NTcyfQ.dV8oZhGpS-p9QoDelWCQqA5JUt9iHK2KI-TkdABM7wA');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(expect.any(Object));
+    });
+    
+    
+
     test('Prueba de ruta no definida', async () => {
         // Simula una solicitud GET a una ruta no definida
         const response = await request(app).get('/ruta-no-existente');
